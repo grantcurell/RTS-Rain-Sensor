@@ -3,21 +3,17 @@
 - [RTS Rain Sensor](#rts-rain-sensor)
   - [Helpful Links](#helpful-links)
   - [Parts](#parts)
+  - [Work Log](#work-log)
+    - [9 September 2023](#9-september-2023)
   - [How it Works](#how-it-works)
     - [Potentiometer](#potentiometer)
-      - [Introduction to Potentiometers](#introduction-to-potentiometers)
       - [Components of a Potentiometer](#components-of-a-potentiometer)
-      - [Potentiometer as a Voltage Divider](#potentiometer-as-a-voltage-divider)
-      - [Resistance Adjustment](#resistance-adjustment)
-      - [Voltage Output Adjustment](#voltage-output-adjustment)
-      - [Common Applications](#common-applications)
-      - [Movable Wiper Terminal](#movable-wiper-terminal)
-        - [Voltage Drop](#voltage-drop)
-    - [Electromotive Force (EMF)](#electromotive-force-emf)
-    - [Galvanometer](#galvanometer)
-  - [Galvanometer: Measuring Small Electric Currents](#galvanometer-measuring-small-electric-currents)
+      - [My Explanation](#my-explanation)
+      - [Mathematical Modeling](#mathematical-modeling)
     - [Kirchoff's Current Law (KCL)](#kirchoffs-current-law-kcl)
       - [Intuitive Explanation of Current Flow](#intuitive-explanation-of-current-flow)
+    - [Voltage Divider Formula](#voltage-divider-formula)
+    - [Rotary Potentiometer](#rotary-potentiometer)
 
 ## Helpful Links
 
@@ -27,6 +23,16 @@
 ## Parts
 
 - https://www.amazon.com/HiLetgo-Moisture-Humidity-Sensitivity-Nickeled/dp/B01DK29K28/ref=sr_1_2?keywords=arduino+rain+sensor&sr=8-2
+
+## Work Log
+
+### 9 September 2023
+
+- Studied potentiometers
+  - Wrote [my explanation](#my-explanation)
+- Understood generally how the circuit works
+- Started mathematically modeling the circuit
+- Bought the rain sensor
 
 ## How it Works
 
@@ -38,9 +44,6 @@
 
 ### Potentiometer
 
-#### Introduction to Potentiometers
-A potentiometer, often called a "pot," is an electronic component used to vary resistance manually. It consists of a resistive element and three terminals.
-
 #### Components of a Potentiometer
 A potentiometer has the following components:
 - **Resistive Element:** This is a strip of resistive material, usually made of carbon, cermet, or conductive plastic. It determines the total resistance of the potentiometer.
@@ -48,83 +51,47 @@ A potentiometer has the following components:
   - Two fixed outer terminals (often labeled as "1" and "3") connected across a voltage source (e.g., a power supply).
   - A movable [wiper terminal](#movable-wiper-terminal) (labeled as "2") that slides along the resistive element.
 
-#### Potentiometer as a Voltage Divider
-A potentiometer operates as a voltage divider circuit. The voltage source is connected across the fixed outer terminals, and the output voltage is taken from the wiper terminal.
+#### My Explanation
 
-#### Resistance Adjustment
-- Rotating or sliding the wiper along the resistive element changes the resistance between the wiper and one of the fixed terminals.
-- When the wiper is at one extreme (close to terminal "1"), the resistance between the wiper and terminal "1" is high, while the resistance between the wiper and terminal "3" is low.
-- When the wiper is at the other extreme (close to terminal "3"), the resistance between the wiper and terminal "3" is high, while the resistance between the wiper and terminal "1" is low.
-- Moving the wiper to different positions between the extremes adjusts the resistance between the wiper and both fixed terminals.
+![](images/2023-09-09-21-01-18.png)
 
-#### Voltage Output Adjustment
-- As you change the resistance between the wiper and one of the fixed terminals, the output voltage at the wiper terminal varies proportionally.
-- This voltage change is determined by the position of the wiper along the resistive element.
-- It allows you to manually adjust the voltage or resistance in the circuit connected to the potentiometer.
+The way this works in a rain water sensor is you have $V_0$ connected to one set of conductive plates and the wiper of the potentiometer connected to the other set of conductive plates. $V_CC$ is connected to one terminal of the potentiometer and $V_0$ is connected to the other.
 
-#### Common Applications
-Potentiometers are used in various applications, such as:
-- Audio Volume Control: Adjusting the volume on radios, amplifiers, and speakers.
-- Brightness Control: Dimming lights or adjusting the brightness of displays.
-- Tuning Circuits: Fine-tuning electronic circuits for optimal performance.
-- User Interface Controls: Controlling parameters in devices like thermostats and joysticks.
+$V_out$ is effectively measuring the resistance between ground and the wiper. When it's dry, the resistance between the wiper and ground is really high. This correspondingly means that voltage difference between $V_CC$ and the wiper are less than $V_CC$ itself because the resistance between the two is just whatever the resistance of the potentiometer's resistant material is. However, if rain starts to fall on the rain water sensor, current passes between the two sets of conductive plates which then makes the wiper basically the same as ground - IE infinite resistance. This causes $V_out$ to spike so we know it's raining.
 
-#### Movable Wiper Terminal
+#### Mathematical Modeling
 
-The resistance of the wiper changes as it moves away or closer to the terminals in a potentiometer due to the fundamental principles of the resistive element and the way the wiper interacts with it. Let me explain in more detail:
+The voltage divider principle states that if you have a resistor network or a wire with varying resistance (like the potentiometer's resistive element), the voltage at any point along that resistor network is proportional to the resistance between that point and one of the voltage references (in this case, $V_CC$ and ground).
 
-1. Resistive Element: Inside a potentiometer, there is a resistive element, typically a strip of resistive material. This resistive element has a consistent resistance per unit length.
-2. Voltage Divider: The potentiometer is wired as a voltage divider. The fixed outer terminals (usually labeled as "1" and "3") are connected across a voltage source, creating a voltage gradient along the resistive element.
-3. Wiper Contact: The movable wiper terminal (labeled as "2") is connected to the wiper arm. When you adjust the potentiometer, the wiper arm moves along the resistive element. It makes contact with the resistive material.
+The equation 
 
-- When the wiper is positioned closer to one of the fixed terminals (e.g., "1"), it has a shorter path along the resistive element to that terminal. As a result, the wiper has lower resistance because it's encountering less resistive material.
-- Conversely, when the wiper is moved away from one fixed terminal and closer to the other (e.g., closer to "3"), it has a longer path along the resistive element to that terminal. This longer path means the wiper encounters more resistive material, resulting in higher resistance.
+$$
+V_{\text{out}} = V_{\text{CC}} \cdot \frac{R_{\text{WG}}}{R_{\text{total}}}
+$$
 
-In essence, the resistance of the wiper terminal changes based on how much resistive material it contacts. The resistance decreases as it moves closer to one terminal and increases as it moves away from that terminal toward the other. This resistance change is precisely what allows the potentiometer to function as a variable resistor, enabling you to adjust the voltage or resistance in the circuit it's connected to by simply changing the wiper's position.
+is based on the principle of a voltage divider. In a potentiometer circuit, the voltage at the center terminal ($V_{\text{out}}$) is determined by the division of voltage across a resistor network, which includes the potentiometer's internal resistor.
 
-In a potentiometer used as a voltage divider, the terminals are typically labeled as follows:
+Here's why this equation is used:
 
-- Terminal "1": This terminal is often connected to the positive supply voltage, commonly referred to as VCC.
-- Terminal "3": This terminal is typically connected to the ground or common reference point, labeled as 0V or GND.
+- **Voltage Divider Principle:** When you have two resistors in series, with a voltage source connected across them, the voltage at the point between the two resistors is determined by the ratio of the resistances. This is a fundamental principle known as the voltage divider formula.
 
-The voltage source is applied across terminals "1" and "3," creating a voltage gradient along the resistive element. The wiper terminal, usually labeled as "2," is connected to a point where you want to obtain a variable voltage output based on the wiper's position along the resistive element.
+- **Potentiometer as a Variable Resistor:** A potentiometer is essentially a variable resistor with three terminals: one fixed terminal, one movable wiper terminal, and one center output terminal. As you move the wiper along the resistive element, you change the resistance between the wiper and one end (connected to \(V_{\text{CC}}\)).
 
-By adjusting the position of the wiper, you can control the voltage output between terminal "2" and ground (0V), effectively changing the voltage in the circuit as a result.
+- **Center Terminal Voltage:** The voltage at the center terminal (\(V_{\text{out}}\)) is the voltage you measure or use for various applications. It depends on the division of resistance within the potentiometer.
 
-This setup allows the potentiometer to function as a variable resistor and voltage control element.
+- **Voltage Divider Equation:** The voltage at the center terminal can be calculated using the voltage divider formula:
 
-##### Voltage Drop
+$$
+V_{\text{out}} = V_{\text{CC}} \cdot \frac{R_{\text{WG}}}{R_{\text{total}}}
+$$
 
-The potentiometer measures the voltage drop between its wiper terminal (usually labeled as "2") and one of the fixed outer terminals, which is often labeled as "1" or "3." The choice of which terminal to use depends on the specific configuration and how the potentiometer is connected in the circuit.
+- \(V_{\text{out}}\) is the voltage at the center terminal.
+- \(V_{\text{CC}}\) is the power supply voltage.
+- \(R_{\text{WG}}\) is the resistance between the wiper and ground.
+- \(R_{\text{total}}\) is the total resistance of the potentiometer's internal resistor.
 
-So, the voltage drop is measured between the wiper terminal and either terminal "1" or terminal "3." This voltage drop is proportional to the position of the wiper along the resistive element and can be adjusted by changing the wiper's position.
+In the context of a rain sensor using a potentiometer, this equation is used to relate the position of the wiper (and the corresponding resistance \(R_{\text{WG}}\)) to the output voltage \(V_{\text{out}}\). When rainwater changes the resistance between the wiper and ground, it affects \(V_{\text{out}}\) accordingly, allowing the sensor to detect and measure rainfall intensity.
 
-### Electromotive Force (EMF)
-
-"EMF" stands for "Electromotive Force." Electromotive force is a term used to describe the electrical potential difference or voltage produced by a source of electrical energy, such as a battery or a generator. It represents the energy per unit charge supplied by the source to drive electrical current through a circuit.
-
-In the passage you shared, the potentiometer is used to compare the EMF (voltage) of two cells, which means it is used to measure and compare the electrical potential provided by these cells. Additionally, the potentiometer is used for calibrating ammeters, voltmeters, and watt-meters, which are instruments that measure electrical current, voltage, and power, respectively.
-
-### Galvanometer
-
-## Galvanometer: Measuring Small Electric Currents
-
-A galvanometer is an instrument used to detect and measure small electric currents. It operates based on electromagnetic induction and is designed to measure low-level currents. Here are its key components and characteristics:
-
-- **Coil of Wire:** The central component of a galvanometer is a coil of wire, often wound around a lightweight, pivoted frame or needle.
-- **Magnetic Field:** A permanent magnet or a magnetic coil surrounds the coil of wire. This external magnetic field interacts with the electric current passing through the coil.
-- **Pivot and Needle:** The coil is mounted on a pivot, allowing it to rotate freely. Attached to the coil is a thin, lightweight pointer (needle).
-- **Current Sensing:** When an electric current flows through the coil, it generates a magnetic field around the coil. This magnetic field interacts with the external magnetic field and exerts a torque on the coil.
-- **Deflection:** The torque causes the coil to rotate, resulting in the movement of the attached pointer (needle). The degree of deflection is directly proportional to the current passing through the coil.
-- **Scale:** Typically, a scale is placed near the pointer to provide a visual indication of the current value being measured.
-
-Galvanometers are highly sensitive instruments and find use in various applications, including:
-- **Ammeters:** Galvanometers serve as the basis for ammeters, which measure electric current in amperes.
-- **Voltmeters:** By adding a series resistor, a galvanometer can be converted into a voltmeter to measure voltage.
-- **Wheatstone Bridge:** They are used in Wheatstone bridge circuits to measure resistance accurately.
-- **Scientific Research:** Galvanometers are employed in scientific experiments to measure and detect small electric currents.
-
-Modern galvanometers may also be designed as digital instruments, offering higher precision and accuracy in measuring currents. They are widely used in both laboratory and industrial settings.
 
 ### Kirchoff's Current Law (KCL)
 
@@ -163,3 +130,54 @@ Imagine two water tanks placed side by side, representing batteries, and they ar
 3. **Parallel Connection:** When the two tanks are connected at the bottom by the pipe, it's like connecting batteries in parallel. The water levels in both tanks are at the same height, indicating the same potential energy.
 4. **No Flow of Water:** Because the water levels are the same, there is no difference in potential energy between the two tanks. As a result, water doesn't flow from one tank to the other; it remains at the same level in both tanks.
 5. **Analogous to Electrical Scenario:** This situation is analogous to connecting two batteries with the same voltage in parallel. Since they have the same voltage (potential energy), there is no voltage difference to drive electric current between them. Therefore, no electric current flows through the circuit.
+
+### Voltage Divider Formula
+
+The voltage divider formula is a fundamental equation used in electrical engineering to calculate the output voltage ($V_{out}$) across a specific component or point in a circuit when a known input voltage ($V_{in}$) is applied across a series of resistors or components connected in series. It is often used with resistors in voltage divider circuits.
+
+The voltage divider formula can be expressed as:
+
+$$
+V_{out} = V_{in} \cdot \frac{R_2}{R_1 + R_2}
+$$
+
+Where:
+- $V_{out}$ is the output voltage (the voltage across the component of interest).
+- $V_{in}$ is the input voltage (the voltage applied across the entire series circuit).
+- $R_1$ is the resistance of the first resistor or component in the series.
+- $R_2$ is the resistance of the second resistor or component in the series.
+
+This formula allows you to calculate the voltage drop or voltage across a specific resistor or component in a series circuit when you know the values of the resistors and the input voltage. It is widely used in circuit analysis to determine voltage levels at different points in a circuit.
+
+It's important to note that the voltage divider formula is based on the principle that the voltage drop across a resistor is proportional to its resistance relative to the total resistance in the series circuit. The higher the resistance of a component compared to the total resistance, the larger the voltage drop across that component.
+
+### Rotary Potentiometer
+
+A rotary potentiometer is an electrical component with a variable resistor. It consists of three terminals: two fixed terminals, often labeled A and B, and a movable wiper terminal W. The resistive element of the potentiometer has a total resistance value denoted as $R_{\text{total}}$.
+
+1. **Resistance Between A and W (R_AW):**
+   - The resistance between terminal A and the wiper terminal W ($R_{\text{AW}}$) varies based on the position of the wiper along the resistive element. It can be calculated as a fraction of the total resistance:
+   
+   $$R_{\text{AW}} = \frac{\text{Position}_{\text{W}}}{R_{\text{total}}} \cdot R_{\text{total}}$$
+
+   - Where:
+     - $\text{Position}_{\text{W}}$ is the position of the wiper along the resistive element (typically expressed as a fraction from 0 to 1).
+
+2. **Resistance Between B and W (R_BW):**
+   - The resistance between terminal B and the wiper terminal W ($R_{\text{BW}}$) is complementary to $R_{\text{AW}}$ and can be calculated as:
+   
+   $$R_{\text{BW}} = R_{\text{total}} - R_{\text{AW}}$$
+
+   - Since the total resistance minus the resistance from A to W gives the resistance from B to W.
+
+3. **Voltage Output (V_out):**
+   - To determine the voltage output at the wiper terminal W, you can use the voltage divider formula, which relates the resistance values and the input voltage ($V_{\text{in}}$):
+   
+   $$V_{\text{out}} = V_{\text{in}} \cdot \frac{R_{\text{AW}}}{R_{\text{total}}}$$
+
+   - Where:
+     - $V_{\text{in}}$ is the voltage applied across terminals A and B.
+     - $R_{\text{AW}}$ is the resistance between terminal A and the wiper terminal W.
+     - $R_{\text{total}}$ is the total resistance of the potentiometer's resistive element.
+
+By adjusting the position of the wiper, you can vary $R_{\text{AW}}$, which, in turn, affects the voltage output at terminal W. This enables precise control of voltage levels in a circuit connected to the potentiometer.
