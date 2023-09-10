@@ -55,13 +55,13 @@ A potentiometer has the following components:
 
 ![](images/2023-09-09-21-01-18.png)
 
-The way this works in a rain water sensor is you have $V_0$ connected to one set of conductive plates and the wiper of the potentiometer connected to the other set of conductive plates. $V_CC$ is connected to one terminal of the potentiometer and $V_0$ is connected to the other.
+The way this works in a rain water sensor is you have $V_0$ connected to one set of conductive plates and the wiper of the potentiometer connected to the other set of conductive plates. $V_{CC}$ is connected to one terminal of the potentiometer and $V_0$ is connected to the other.
 
-$V_out$ is effectively measuring the resistance between ground and the wiper. When it's dry, the resistance between the wiper and ground is really high. This correspondingly means that voltage difference between $V_CC$ and the wiper are less than $V_CC$ itself because the resistance between the two is just whatever the resistance of the potentiometer's resistant material is. However, if rain starts to fall on the rain water sensor, current passes between the two sets of conductive plates which then makes the wiper basically the same as ground - IE infinite resistance. This causes $V_out$ to spike so we know it's raining.
+$V_out$ is effectively measuring the resistance between ground and the wiper. When it's dry, the resistance between the wiper and ground is really high. This correspondingly means that voltage difference between $V_{CC}$ and the wiper are less than $V_{CC}$ itself because the resistance between the two is just whatever the resistance of the potentiometer's resistant material is. However, if rain starts to fall on the rain water sensor, current passes between the two sets of conductive plates which then makes the wiper basically the same as ground - IE infinite resistance. This causes $V_out$ to spike so we know it's raining.
 
 #### Mathematical Modeling
 
-The voltage divider principle states that if you have a resistor network or a wire with varying resistance (like the potentiometer's resistive element), the voltage at any point along that resistor network is proportional to the resistance between that point and one of the voltage references (in this case, $V_CC$ and ground).
+The voltage divider principle states that if you have a resistor network or a wire with varying resistance (like the potentiometer's resistive element), the voltage at any point along that resistor network is proportional to the resistance between that point and one of the voltage references (in this case, $V_{CC}$ and ground).
 
 The equation 
 
