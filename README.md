@@ -20,6 +20,7 @@
 
 - https://circuitdigest.com/microcontroller-projects/interfacing-rain-sensor-with-arduino
 - [Potentiometer: Definition, Types, and Working Principal](https://www.electrical4u.com/potentiometer/)
+- [Pull Up/Down Resistors Explained](https://www.electronics-tutorials.ws/logic/pull-up-resistor.html)
 
 ## Parts
 
