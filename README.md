@@ -3,9 +3,7 @@
 - [RTS Rain Sensor](#rts-rain-sensor)
   - [Helpful Links](#helpful-links)
   - [Parts](#parts)
-  - [Work Log](#work-log)
-    - [9 September 2023](#9-september-2023)
-    - [10 September 2023](#10-september-2023)
+  - [Design](#design)
   - [How it Works](#how-it-works)
     - [Potentiometer](#potentiometer)
       - [Components of a Potentiometer](#components-of-a-potentiometer)
@@ -15,6 +13,7 @@
       - [Duty Cycle](#duty-cycle)
     - [Pull Up Resistor](#pull-up-resistor)
     - [Logic Level](#logic-level)
+  - [Jason Suggestion](#jason-suggestion)
 
 ## Helpful Links
 
@@ -26,20 +25,12 @@
 
 - https://www.amazon.com/HiLetgo-Moisture-Humidity-Sensitivity-Nickeled/dp/B01DK29K28/ref=sr_1_2?keywords=arduino+rain+sensor&sr=8-2
 
-## Work Log
+## Design
 
-### 9 September 2023
-
-- Studied potentiometers
-  - Wrote [my explanation](#my-explanation)
-- Understood generally how the circuit works
-- Started mathematically modeling the circuit
-- Bought the rain sensor
-
-### 10 September 2023
-
-- Finished studying the math behind voltage divider circuits
-
+- Red-$V_{CC}$
+- Brown-Ground
+- Blue-$DO$
+- Green-Analog out
 ## How it Works
 
 ![](images/2023-09-09-10-26-56.png)
@@ -112,3 +103,7 @@ Here are the common voltage levels and their corresponding logic states in digit
   - Representation: This region is a transitional state and can be interpreted differently depending on the specific components and circuitry. It may not reliably represent a clear logic 0 or 1.
 
 It's important to note that the actual voltage levels for logic LOW and logic HIGH can vary depending on the specific technology and voltage standards used in a digital system. For example, in a 3.3V digital system, logic LOW might be closer to 0V, and logic HIGH might be closer to 3.3V.
+
+## Jason Suggestion
+
+- Home Bridge
